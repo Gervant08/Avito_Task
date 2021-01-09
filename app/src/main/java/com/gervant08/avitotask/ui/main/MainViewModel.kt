@@ -46,9 +46,10 @@ class MainViewModel: ViewModel() {
                 val newElementsList = _mutableElementList
 
                 //If the list is empty or there is only one element in it, then just add a new element and remember its index
-                if (newElementsList.value?.isEmpty() == true || newElementsList.value?.size == 1) {
-                    newElementsList.value?.add(element)
-                    newElementIndex = newElementsList.value!!.lastIndex
+                if (newElementsList.value?.isEmpty() == true || newElementsList.value?.size == 1) {  //Random.nextInt() it doesn't work with an empty list or dimension = 1( nextInt(0, 0) )
+                    previousListSize = newElementsList.value!!.size                                  // Remember the size before adding the element
+                    newElementsList.value?.add(element)                                              // Adding an element
+                    newElementIndex = newElementsList.value!!.lastIndex                              // Remember its index
                 }
                 else{
                     val randomIndex = Random.nextInt(0, _mutableElementList.value!!.lastIndex) // A random position is created for the future element
