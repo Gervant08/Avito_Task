@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AvitoTask</string>
+    <string name="delete_button">DELETE</string>
 </resources>
