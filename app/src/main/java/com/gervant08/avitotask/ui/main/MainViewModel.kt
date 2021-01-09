@@ -17,8 +17,7 @@ class MainViewModel: ViewModel() {
     var deletedElementIndex = 0             // Variable used to store the index of a deleted item that was removed from the list
 
     object PoolOfDeletedItems{  // Pool Of Deleted Items
-        val _mutablePool = MutableLiveData<ArrayList<Element>>(arrayListOf())
-        val pool: LiveData<ArrayList<Element>> get() = _mutablePool
+        val pool = MutableLiveData<ArrayList<Element>>(arrayListOf())
     }
 
     fun deleteElement(pool: ArrayList<Element>){
@@ -68,15 +67,15 @@ class MainViewModel: ViewModel() {
     private fun createNewElementId(): Int{
         val id: Int
 
-        if (PoolOfDeletedItems._mutablePool.value!!.isEmpty())                      // If the pool of deleted items is empty, then just increase the item id
+        if (PoolOfDeletedItems.pool.value!!.isEmpty())                      // If the pool of deleted items is empty, then just increase the item id
             id = _mutableElementList.value?.maxByOrNull { it.id }!!.id + 1
         else{
-            id = PoolOfDeletedItems._mutablePool.value!!.first().id                 // Otherwise, we take the id of the first element from the pool
+            id = PoolOfDeletedItems.pool.value!!.first().id                 // Otherwise, we take the id of the first element from the pool
 
-            val newPool = PoolOfDeletedItems._mutablePool.apply {                   // Removing this element from the pool
-                this.value?.remove(PoolOfDeletedItems._mutablePool.value?.first())
+            val newPool = PoolOfDeletedItems.pool.apply {                   // Removing this element from the pool
+                this.value?.remove(PoolOfDeletedItems.pool.value?.first())
             }
-            PoolOfDeletedItems._mutablePool.value = newPool.value
+            PoolOfDeletedItems.pool.value = newPool.value
         }
 
         return id

@@ -43,14 +43,14 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         private fun deleteElement(element: Element) {
             var isClone = false
             // When you click on the button, add this item to the list of deleted items
-            MainViewModel.PoolOfDeletedItems._mutablePool.apply {
+            MainViewModel.PoolOfDeletedItems.pool.apply {
                 // If the item id is already in the pool, then don't add it
                 // If you click on several delete buttons at the same time, several items with the same id will be added to the pool
                 this.value?.forEach { if (it.id == element.id) isClone = true}
 
                 if (!isClone){
                     this.value?.add(element)
-                    MainViewModel.PoolOfDeletedItems._mutablePool.value = this.value
+                    MainViewModel.PoolOfDeletedItems.pool.value = this.value
                 }
 
             }
