@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.gervant08.avitotask.R
 import com.gervant08.avitotask.model.data.Element
 
-class MainAdapter(private val listener: (Element) -> Unit) : ListAdapter<Element, MainAdapter.MainViewHolder>(ElementDiffCallback()) {
+class MainAdapter(private val listener: (Element) -> Unit) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
+
+    private var elementList = arrayListOf<Element>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder =
             MainViewHolder(
@@ -19,9 +19,14 @@ class MainAdapter(private val listener: (Element) -> Unit) : ListAdapter<Element
 
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        holder.onBind(getItem(position))
+        holder.onBind(elementList[position])
     }
 
+    override fun getItemCount(): Int = elementList.size
+
+    fun setElementsList(elementsList: ArrayList<Element>) {
+        this.elementList = elementsList
+    }
 
     inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
@@ -33,18 +38,7 @@ class MainAdapter(private val listener: (Element) -> Unit) : ListAdapter<Element
         }
 
     }
-}
-
-private class ElementDiffCallback : DiffUtil.ItemCallback<Element>() {
-
-    override fun areItemsTheSame(oldItem: Element, newItem: Element): Boolean {
-        return oldItem.id == newItem.id
-    }
-
-
-    override fun areContentsTheSame(oldItem: Element, newItem: Element): Boolean {
-        return oldItem == newItem
-    }
 
 
 }
+

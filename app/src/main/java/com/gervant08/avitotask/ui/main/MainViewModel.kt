@@ -10,7 +10,8 @@ import com.gervant08.avitotask.model.data.PoolOfDeletedItems
 import kotlinx.coroutines.*
 import kotlin.random.Random
 
-class MainViewModel: ViewModel() {
+
+class MainViewModel : ViewModel() {
 
     private val _mutableElementList = MutableLiveData(ElementsList.list)
     val elementsList: LiveData<ArrayList<Element>> get() = _mutableElementList
@@ -104,11 +105,32 @@ class MainViewModel: ViewModel() {
 
     fun addElementToPool(element: Element) {
 
-        val newList = PoolOfDeletedItems.pool.apply {
-            this.value?.add(element)
-        }
+        var isClone = false
 
-        PoolOfDeletedItems.pool.value = newList.value
+        // When you click on the button, add this item to the list of deleted items
+        PoolOfDeletedItems.pool.apply {
+            // If the item id is already in the pool, then don't add it
+            // If you click on several delete buttons at the same time, several items with the same id will be added to the pool
+            this.value?.forEach { if (it.id == element.id) isClone = true }
+
+            if (!isClone) {
+                this.value?.add(element)
+                PoolOfDeletedItems.pool.value = this.value
+            }
+
+        }
+    }
+
+    fun updateAdapterList(elementsList: ArrayList<Element>, adapter: MainAdapter) {
+
+        adapter.setElementsList(elementsList)
+        // Compare the length of the previous list with the current one. If the previous value is greater, then the element has been deleted.
+        if (previousListSize > elementsList.size)
+            adapter.notifyItemRemoved(deletedElementIndex)
+        //If less, then the item was added to the list
+        else if (previousListSize < elementsList.size)
+            adapter.notifyItemInserted(newElementIndex)
+
     }
 
 }

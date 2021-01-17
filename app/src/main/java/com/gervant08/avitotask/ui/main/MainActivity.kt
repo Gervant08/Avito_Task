@@ -39,17 +39,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onChanged(elementsList: ArrayList<Element>?) {
-        // Passing a new list of elements to the adapter
-        adapter.submitList(elementsList)
-
-        // Compare the length of the previous list with the current one. If the previous value is greater, then the element has been deleted.
-        if (viewModel.previousListSize > elementsList!!.size)
-            adapter.notifyItemRemoved(viewModel.deletedElementIndex)
-        //If less, then the item was added to the list
-        else if (viewModel.previousListSize < elementsList.size)
-            adapter.notifyItemInserted(viewModel.newElementIndex)
-
+    private fun onChanged(elementsList: ArrayList<Element>) {
+        viewModel.updateAdapterList(elementsList, adapter)
     }
 
     private fun onDeleted(pool: ArrayList<Element>) {
