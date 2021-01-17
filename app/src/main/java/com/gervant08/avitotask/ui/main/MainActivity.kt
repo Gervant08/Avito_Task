@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*adapter.setElements(viewModel.elementsList.value ?: arrayListOf())*/
         initRecycler()
         /* Subscribe to changes in the main list of items*/
         viewModel.elementsList.observe(this, this::onChanged)
